@@ -33,13 +33,19 @@ const options = {
 
     function onStartBtn () {
         start.setAttribute('disabled', true);
-        setInterval(() => {
-            const currentTime = convertMs(userDate - Date.now());
-    
-            seconds.textContent = addLeadingZero(currentTime.seconds);
-            minutes.textContent = addLeadingZero(currentTime.minutes);
-            hours.textContent = addLeadingZero(currentTime.hours);
-            days.textContent = addLeadingZero(currentTime.days);
+        const timerId = setInterval(() => {
+            const currentTime = Date.now();
+            const diff = userDate - currentTime;
+            const time = convertMs(diff);
+            if (diff < 0) {
+                clearInterval(timerId);
+                return Notify.success("Congrats time is out!");
+            };
+            
+            seconds.textContent = addLeadingZero(time.seconds);
+            minutes.textContent = addLeadingZero(time.minutes);
+            hours.textContent = addLeadingZero(time.hours);
+            days.textContent = addLeadingZero(time.days);
             
         }, 1000);
     };
